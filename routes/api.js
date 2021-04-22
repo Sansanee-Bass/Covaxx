@@ -9,7 +9,7 @@ router.get('/orm', async (req, res) => {
 
 
     const data = {
-        url: 'https://www.gatineau.ca/upload/donneesouvertes/BORNE_FONTAINE.xml',
+        url: 'https://api.covid19tracker.ca/regions',
         content: 'testing...',
         lastFetch: Date.now()
     };
@@ -20,7 +20,7 @@ router.get('/orm', async (req, res) => {
 });
 
 router.get('/hydrantsx', async (req, res) => {
-    let url = 'https://www.gatineau.ca/upload/donneesouvertes/BORNE_FONTAINE.xml';
+    let url = 'https://api.covid19tracker.ca/regions';
 
     data = await cache.findAll({
         order: [['lastFetch', 'DESC']],
@@ -61,22 +61,5 @@ router.get('/hydrantsx', async (req, res) => {
 
 
 });
-
-
-
-router.get('/geo', async (req, res) => {
-
-    let ip = req.socket.remoteAddress;
-    console.log(ip);
-    if (ip == "::1" || ip.includes("::ffff")) {
-        ip = "74.56.113.25";
-    }
-
-    let loc = await axios.get(`https://api.ipgeolocation.io/ipgeo?apiKey=c461a284199842f893dc5ec8561c9a7a&ip=${ip}`);
-
-    //console.log(loc.data);
-    res.json(loc.data);
-});
-
 
 module.exports = router;

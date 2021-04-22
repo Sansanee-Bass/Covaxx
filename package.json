@@ -1,5 +1,5 @@
 {
-    "name": "express-mariadb-starter",
+    "name": "covaxx",
     "version": "1.0.0",
     "description": "first express app",
     "main": "index.js",
@@ -9,7 +9,7 @@
     },
     "repository": {
         "type": "git",
-        "url": "git+https://github.com/stephenson-heritage/express-first.git"
+        "url": "git+https://github.com/Sansanee-Bass/Covaxx.git"
     },
     "author": "",
     "license": "ISC",

@@ -67,11 +67,3 @@ window.onload = async () => {
         getServerGeo();
     };
 };
-
-let getServerGeo = async function () {
-    var loc = await fetch("/api/geo");
-    var jData = await loc.json();
-
-    console.log(jData);
-    map.setCenter({ lon: jData.longitude, lat: jData.latitude });
-}
