@@ -7,7 +7,6 @@ const { Op } = require('sequelize');
 
 router.get('/orm', async (req, res) => {
 
-
     const data = {
         url: 'https://api.covid19tracker.ca/regions',
         content: 'testing...',
@@ -19,7 +18,7 @@ router.get('/orm', async (req, res) => {
 
 });
 
-router.get('/hydrantsx', async (req, res) => {
+router.get('/regions', async (req, res) => {
     let url = 'https://api.covid19tracker.ca/regions';
 
     data = await cache.findAll({
@@ -41,25 +40,19 @@ router.get('/hydrantsx', async (req, res) => {
             responseType: 'text'
         });
 
-
-
         const data = {
             url: url,
-            content: d.data,
+            content: JSON.stringify(d.data),
             lastFetch: Date.now()
         };
         res.send(
             d.data
         );
         cache.create(data);
-
-
     } else {
-
+        console.log("Fetched data from cache");
         res.send(data[0].content);
     }
-
-
 });
 
 module.exports = router;

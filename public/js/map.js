@@ -25,12 +25,6 @@ let getHydrants = async () => {
             .addTo(map);
     });
 
-
-    // 
-    //     console.log(el.innerHTML);
-    // });
-
-
 }
 
 window.onload = async () => {

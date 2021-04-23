@@ -5,8 +5,6 @@ const app = express();
 const port = 9000;
 const cors = require("cors");
 const axios = require("axios");
-
-
 const apiRouter = require('./routes/api');
 
 app.use('/', express.static(path.join(__dirname, 'public')));
