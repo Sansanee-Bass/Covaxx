@@ -6,29 +6,23 @@ var map = new mapboxgl.Map({
     zoom: 15 // starting zoom
 });
 
-let getHydrants = async () => {
-    let req = await fetch("/api/hydrantsx");
+let getRegions = async () => {
+    let req = await fetch("/api/regions");
     let data = await req.text();
-    let parsed = new window.DOMParser().parseFromString(data, 'text/xml');
+    var regions = JSON.parse(data).data;
 
-    let hydrants = parsed.querySelectorAll("GEOM");
+    //let parsed = new window.DOMParser().parseFromString(data, 'text/xml');
+    // let regions = parsed;//.querySelectorAll();
 
-    //console.log(hydrants.length);
-    hydrants.forEach((el) => {
-        let loc = el.innerHTML;
-        // POINT (-75.738712 45.500612)
-        loc = loc.substring(7, loc.length - 1).split(' ');
-        //console.log(loc);
-
-        var marker = new mapboxgl.Marker()
-            .setLngLat([loc[0], loc[1]])
-            .addTo(map);
+    console.log(regions.length);
+    regions.forEach(element => {
+        console.log(element.hr_uid + " " + element.province + " " + element.engname);
+        document.getElementById('regions').innerHTML += `<div id="${element.hr_uid}">${element.hr_uid} ${element.province} ${element.engname}</div>`;
     });
-
 }
 
 window.onload = async () => {
-    getHydrants();
+    getRegions();
     let location = false;
     let tracker;
     if ('geolocation' in navigator) {
@@ -58,6 +52,6 @@ window.onload = async () => {
                 };
             }
         }
-        getServerGeo();
+        // getServerGeo();
     };
 };

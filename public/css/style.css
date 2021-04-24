@@ -1,8 +1,13 @@
 #map {
-    width: 100vw;
+    width: 70vw;
     height: 100vh;
+    float: left;
+}
+
+#regions {
+    margin-left: 1em;
 }
 
 body {
-    margin: 0
+    margin: 1em;
 }
