@@ -1,13 +1,72 @@
+/* ------------ header section -------------------------- */
+
+header{
+    display: block;
+    background-color: rgb(0, 174, 255);
+    box-sizing: border-box;
+    color: black;
+    font-size: 5em;
+    font-family: Arial, Helvetica, sans-serif;
+    margin: 0;
+    text-align: center;
+}
+/* ------------ Nav section -------------------------- */
+nav{
+    box-sizing: border-box;
+    margin: -1;
+    padding: 0;
+    background-color: rgba(10, 114, 233, 0.596);
+    color: black;
+}
+nav>ul{
+    display: grid;
+    grid-template-columns:  1fr 1fr;
+    text-align: center;
+    border: 0.5px groove black;
+    margin: 0;
+}
+nav>ul>li{
+
+    list-style: none;
+}
+
+/* ------------ map section -------------------------- */
+body {
+    margin: 1em;
+}
+main{
+    display: grid;
+    grid-template-columns: 3fr 1fr;
+    box-sizing: border-box;
+    width: 100%;
+    height: 70vh;
+    margin-left: 0;
+}
+
 #map {
-    width: 70vw;
-    height: 100vh;
+    width: 100%;
+    height: 70vh;
     float: left;
 }
 
 #regions {
-    margin-left: 1em;
+    box-sizing: border-box;
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
 }
 
-body {
-    margin: 1em;
+/* ------------ footer section -------------------------- */
+
+footer{
+    box-sizing: border-box;
+    width: 100%;
+    height: 5vh; 
+    margin: 0;
+    bottom: 1em;
+    background-color: rgb(0, 174, 255);
+    color: black;
+    font-size: 2em;
+    font-family: Arial, Helvetica, sans-serif;
+    text-align: center;
 }
