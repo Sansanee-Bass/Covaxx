@@ -2,8 +2,8 @@ mapboxgl.accessToken = 'pk.eyJ1IjoibmVpbHdpY2siLCJhIjoiY2trend6anJtMGw3OTJxcDVob
 var map = new mapboxgl.Map({
     container: 'map', // container ID
     style: 'mapbox://styles/neilwick/cknkdys7t0g6m17o64ppw9dia', // style URL
-    center: [-75, 45], // starting position [lng, lat]
-    zoom: 15 // starting zoom
+    center: [-96.5, 55], // starting position [lng, lat]
+    zoom: 2.8 // starting zoom
 });
 
 let getRegions = async () => {
@@ -23,35 +23,35 @@ let getRegions = async () => {
 
 window.onload = async () => {
     getRegions();
-    let location = false;
-    let tracker;
-    if ('geolocation' in navigator) {
-        navigator.geolocation.getCurrentPosition((p) => {
-            console.log(p.coords);
-            location = true;
-            map.setCenter({ lon: p.coords.longitude, lat: p.coords.latitude });
-        });
-    }
+    // let location = false;
+    // let tracker;
+    // if ('geolocation' in navigator) {
+    //     navigator.geolocation.getCurrentPosition((p) => {
+    //         console.log(p.coords);
+    //         location = true;
+    //         map.setCenter({ lon: p.coords.longitude, lat: p.coords.latitude });
+    //     });
+    // }
 
-    if (!location) {
-        // geolocation not available
-        if ('geolocation' in navigator) {
-            let allowGeo = await navigator.permissions.query({ name: 'geolocation' });
-            if (allowGeo.state == "prompt") {
-                allowGeo.onchange = (e) => {
-                    if (e.target.state == "granted") {
+    // if (!location) {
+    //     // geolocation not available
+    //     if ('geolocation' in navigator) {
+    //         let allowGeo = await navigator.permissions.query({ name: 'geolocation' });
+    //         if (allowGeo.state == "prompt") {
+    //             allowGeo.onchange = (e) => {
+    //                 if (e.target.state == "granted") {
 
-                        //console.log(e);
-                        navigator.geolocation.getCurrentPosition((p) => {
-                            console.log(p.coords);
-                            location = true;
-                            map.setCenter({ lon: p.coords.longitude, lat: p.coords.latitude });
-                        });
+    //                     //console.log(e);
+    //                     navigator.geolocation.getCurrentPosition((p) => {
+    //                         console.log(p.coords);
+    //                         location = true;
+    //                         map.setCenter({ lon: p.coords.longitude, lat: p.coords.latitude });
+    //                     });
 
-                    }
-                };
-            }
-        }
-        // getServerGeo();
-    };
+    //                 }
+    //             };
+    //         }
+    //     }
+    //     // getServerGeo();
+    // };
 };

@@ -34,8 +34,10 @@ router.get('/regions', async (req, res) => {
             ]
         }
     });
+    // console.log(data);
 
-    if (data.length <= 0) {
+    if (data.length == 0) {
+        console.log("Fetched data and updated cache");
         const d = await axios.get(url, {
             responseType: 'text'
         });
