@@ -27,7 +27,7 @@ window.onload = async () => {
     console.log(map);
     getRegions();
     let region_map = await readJson();
-    map.on('load', drawregions(map, region_map));
+    map.on('load', () => { drawregions(map, region_map) });
     console.log(region_map);
     console.log(region_map.features[0].geometry.coordinates);
 
@@ -75,44 +75,4 @@ let readJson = async function () {
 
 }
 
-drawregions = function (map, region_map) {
-    //console.log("string\n" + JSON.stringify(region_map.features[0].geometry.coordinates));
-    map.addSource(
-        'testregion',
-        {
-            'type': 'geojson',
-            'data': {
-                'type': 'Feature',
-                'geometry': {
-                    'type': 'Polygon',
-                    'coordinates': region_map.features[0].geometry.coordinates
-                }
-            }
-        }
-    );
-    console.log(region_map.features[0].geometry.coordinates);
 
-    // Add a new layer to visualize the polygon.
-    map.addLayer({
-        'id': 'testregion',
-        'type': 'fill',
-        'source': 'testregion', // reference the data source
-        'layout': {},
-        'paint': {
-            'fill-color': '#0080ff', // blue color fill
-            'fill-opacity': 0.5
-        }
-    });
-
-    // Add a black outline around the polygon.
-    map.addLayer({
-        'id': 'outline',
-        'type': 'line',
-        'source': 'testregion',
-        'layout': {},
-        'paint': {
-            'line-color': '#000',
-            'line-width': 3
-        }
-    });
-}
