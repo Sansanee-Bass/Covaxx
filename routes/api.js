@@ -57,4 +57,44 @@ router.get('/regions', async (req, res) => {
     }
 });
 
+router.get('/reports', async (req, res) => {
+    let url = 'https://api.covid19tracker.ca/regions';
+
+    data = await cache.findAll({
+        order: [['lastFetch', 'DESC']],
+        where: {
+            [Op.and]: [
+                { url: url },
+                {
+                    lastFetch: {
+                        [Op.gte]: new Date(new Date() - 24 * 60 * 60 * 1000)
+                    }
+                }
+            ]
+        }
+    });
+    // console.log(data);
+
+    if (data.length == 0) {
+        console.log("Fetched data and updated cache");
+        const d = await axios.get(url, {
+            responseType: 'text'
+        });
+
+        const data = {
+            url: url,
+            content: JSON.stringify(d.data),
+            lastFetch: Date.now()
+        };
+        res.send(
+            d.data
+        );
+        cache.create(data);
+    } else {
+        console.log("Fetched data from cache");
+        res.send(data[0].content);
+    }
+});
+
+
 module.exports = router;

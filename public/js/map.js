@@ -24,6 +24,7 @@ window.onload = async () => {
         center: [-96.5, 55], // starting position [lng, lat]
         zoom: 2.8 // starting zoom
     });
+
     console.log(map);
     getRegions();
     let region_map = await readJson();
