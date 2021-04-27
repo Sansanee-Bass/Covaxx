@@ -1,10 +1,4 @@
-mapboxgl.accessToken = 'pk.eyJ1IjoibmVpbHdpY2siLCJhIjoiY2trend6anJtMGw3OTJxcDVobjAzMXF0NyJ9.GdU99dksEsLt6TlpXlODVQ';
-var map = new mapboxgl.Map({
-    container: 'map', // container ID
-    style: 'mapbox://styles/neilwick/cknkdys7t0g6m17o64ppw9dia', // style URL
-    center: [-96.5, 55], // starting position [lng, lat]
-    zoom: 2.8 // starting zoom
-});
+
 
 let getRegions = async () => {
     let req = await fetch("/api/regions");
@@ -14,15 +8,29 @@ let getRegions = async () => {
     //let parsed = new window.DOMParser().parseFromString(data, 'text/xml');
     // let regions = parsed;//.querySelectorAll();
 
-    console.log(regions.length);
+    //console.log(regions.length);
     regions.forEach(element => {
-        console.log(element.hr_uid + " " + element.province + " " + element.engname);
+        //console.log(element.hr_uid + " " + element.province + " " + element.engname);
         document.getElementById('regions').innerHTML += `<div id="${element.hr_uid}">${element.hr_uid} ${element.province} ${element.engname}</div>`;
     });
+
 }
 
 window.onload = async () => {
+    mapboxgl.accessToken = 'pk.eyJ1IjoibmVpbHdpY2siLCJhIjoiY2trend6anJtMGw3OTJxcDVobjAzMXF0NyJ9.GdU99dksEsLt6TlpXlODVQ';
+    var map = new mapboxgl.Map({
+        container: 'map', // container ID
+        style: 'mapbox://styles/neilwick/cknkdys7t0g6m17o64ppw9dia', // style URL
+        center: [-96.5, 55], // starting position [lng, lat]
+        zoom: 2.8 // starting zoom
+    });
+    console.log(map);
     getRegions();
+    let region_map = await readJson();
+    map.on('load', drawregions(map, region_map));
+    console.log(region_map);
+    console.log(region_map.features[0].geometry.coordinates);
+
     // let location = false;
     // let tracker;
     // if ('geolocation' in navigator) {
@@ -55,3 +63,56 @@ window.onload = async () => {
     //     // getServerGeo();
     // };
 };
+
+let readJson = async function () {
+
+    let response = await fetch('/geojson/health_regions.geojson');
+
+    if (!response.ok) {
+        throw new Error("HTTP error " + response.status);
+    }
+    return await response.json();
+
+}
+
+drawregions = function (map, region_map) {
+    //console.log("string\n" + JSON.stringify(region_map.features[0].geometry.coordinates));
+    map.addSource(
+        'testregion',
+        {
+            'type': 'geojson',
+            'data': {
+                'type': 'Feature',
+                'geometry': {
+                    'type': 'Polygon',
+                    'coordinates': region_map.features[0].geometry.coordinates
+                }
+            }
+        }
+    );
+    console.log(region_map.features[0].geometry.coordinates);
+
+    // Add a new layer to visualize the polygon.
+    map.addLayer({
+        'id': 'testregion',
+        'type': 'fill',
+        'source': 'testregion', // reference the data source
+        'layout': {},
+        'paint': {
+            'fill-color': '#0080ff', // blue color fill
+            'fill-opacity': 0.5
+        }
+    });
+
+    // Add a black outline around the polygon.
+    map.addLayer({
+        'id': 'outline',
+        'type': 'line',
+        'source': 'testregion',
+        'layout': {},
+        'paint': {
+            'line-color': '#000',
+            'line-width': 3
+        }
+    });
+}
