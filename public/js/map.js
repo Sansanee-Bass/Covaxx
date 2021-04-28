@@ -29,8 +29,10 @@ window.onload = async () => {
     getRegions();
     let region_map = await readJson();
     map.on('load', () => { drawregions(map, region_map) });
-    console.log(region_map);
-    console.log(region_map.features[0].geometry.coordinates);
+    // console.log(region_map);
+    // console.log(region_map.features[0].geometry.coordinates);
+
+
 
     // let location = false;
     // let tracker;

@@ -34,15 +34,33 @@ drawregions = function (map, region_map) {
     // When the user moves their mouse over the region-fill layer, we'll update the
     // feature state for the feature under the mouse.
     map.on('mousemove', function (e) {
-        var regions = map.data(e.point, {
-            layers: ['region-borders']
+        var features = map.queryRenderedFeatures(e.point);
+
+        // Limit the number of properties we're displaying for
+        // legibility and performance
+        var displayProperties = [
+            'type',
+            'properties',
+            'id',
+            'layer',
+            'source',
+            'sourceLayer',
+            'state'
+        ];
+
+        var displayFeatures = features.map(function (feat) {
+            var displayFeat = {};
+            displayProperties.forEach(function (prop) {
+                displayFeat[prop] = feat[prop];
+            });
+            return displayFeat;
         });
-        console.log(regions);
-        if (regions.length > 0) {
-            document.getElementById('pd').innerHTML = '<h3><strong>' + region - borders[0].properties.engname + '</strong></h3><p><strong><em>';
-        } else {
-            document.getElementById('pd').innerHTML = '<p>Hover over a Region!</p>';
-        }
+
+        document.getElementById('features').innerHTML = JSON.stringify(
+            displayFeatures,
+            null,
+            2
+        );
     });
 
 
