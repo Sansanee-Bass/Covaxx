@@ -5,7 +5,7 @@ drawregions = function (map, region_map) {
     // region_map.features.forEach(geo => {
 
     // });
-    let hoveredStateId = null;
+    var hoveredStateId = null;
 
     let mapdata = {
         'type': 'geojson',
@@ -22,16 +22,16 @@ drawregions = function (map, region_map) {
     // console.log(region_map.features[0].geometry.coordinates);
 
     // Add a new layer to visualize the polygon.
-    map.addLayer({
-        'id': 'region-fills',
-        'type': 'fill',
-        'source': 'regions', // reference the data source
-        'layout': {},
-        'paint': {
-            'fill-color': '#0080ff', // blue color fill
-            'fill-opacity': 0.5
-        }
-    });
+    // map.addLayer({
+    //     'id': 'region-fills',
+    //     'type': 'fill',
+    //     'source': 'regions', // reference the data source
+    //     'layout': {},
+    //     'paint': {
+    //         'fill-color': '#0080ff', // blue color fill
+    //         'fill-opacity': 0.5
+    //     }
+    // });
 
     // Add a black outline around the polygon.
     map.addLayer({

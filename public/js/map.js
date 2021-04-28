@@ -20,7 +20,7 @@ window.onload = async () => {
     mapboxgl.accessToken = 'pk.eyJ1IjoibmVpbHdpY2siLCJhIjoiY2trend6anJtMGw3OTJxcDVobjAzMXF0NyJ9.GdU99dksEsLt6TlpXlODVQ';
     var map = new mapboxgl.Map({
         container: 'map', // container ID
-        style: 'mapbox://styles/neilwick/cknkdys7t0g6m17o64ppw9dia', // style URL
+        style: 'mapbox://styles/neilwick/cko0eplb555yi17qhvfe61fog', // style URL
         center: [-96.5, 55], // starting position [lng, lat]
         zoom: 2.8 // starting zoom
     });
