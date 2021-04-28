@@ -59,9 +59,9 @@ router.get('/regions', async (req, res) => {
 
 //reports/regions/:hr_uid
 router.get('/reports', async (req, res) => {
-
+    console.log(req.query.region);
     // let url = 'https://api.covid19tracker.ca/reports/regions';
-    let url = 'https://api.covid19tracker.ca/reports/regions/2407';
+    let url = `https://api.covid19tracker.ca/reports/regions/${req.query.region}`;
     
 
     data = await cache.findAll({

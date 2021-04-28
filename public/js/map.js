@@ -10,7 +10,7 @@ let getRegions = async () => {
 
     //console.log(regions.length);
     regions.forEach(element => {
-        //console.log(element.hr_uid + " " + element.province + " " + element.engname);
+        fetch(`/api/reports?region=${element.hr_uid}`);
         document.getElementById('regions').innerHTML += `<div id="${element.hr_uid}">${element.hr_uid} ${element.province} ${element.engname}</div>`;
     });
 
