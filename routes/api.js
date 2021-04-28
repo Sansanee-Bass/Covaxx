@@ -17,7 +17,18 @@ router.get('/orm', async (req, res) => {
     res.json(data);
 
 });
+router.get('/orm', async (req, res) => {
 
+    const data = {
+        url: 'https://api.covid19tracker.ca/reports/regions',
+        content: 'testing...',
+        lastFetch: Date.now()
+    };
+
+    await cache.create(data);
+    res.json(data);
+
+});
 router.get('/regions', async (req, res) => {
     let url = 'https://api.covid19tracker.ca/regions';
 
@@ -56,9 +67,9 @@ router.get('/regions', async (req, res) => {
         res.send(data[0].content);
     }
 });
-
+//reports/regions/:hr_uid
 router.get('/reports', async (req, res) => {
-    let url = 'https://api.covid19tracker.ca/regions';
+    let url = 'https://api.covid19tracker.ca/reports/regions';
 
     data = await cache.findAll({
         order: [['lastFetch', 'DESC']],
