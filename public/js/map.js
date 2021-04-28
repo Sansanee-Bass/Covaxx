@@ -22,7 +22,7 @@ window.onload = async () => {
         container: 'map', // container ID
         style: 'mapbox://styles/neilwick/cko0eplb555yi17qhvfe61fog', // style URL
         center: [-96.5, 55], // starting position [lng, lat]
-        zoom: 2.8 // starting zoom
+        zoom: 3 // starting zoom
     });
 
     console.log(map);

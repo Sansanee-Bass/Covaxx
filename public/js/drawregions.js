@@ -33,20 +33,35 @@ drawregions = function (map, region_map) {
 
     // When the user moves their mouse over the region-fill layer, we'll update the
     // feature state for the feature under the mouse.
+
     map.on('mousemove', function (e) {
+
         var features = map.queryRenderedFeatures(e.point);
 
-        // Limit the number of properties we're displaying for
-        // legibility and performance
-        var displayProperties = [
-            'type',
-            'properties',
-            'id',
-            'layer',
-            'source',
-            'sourceLayer',
-            'state'
-        ];
+        features.forEach((feat) => {
+            if (feat.layer.id == "health-regions-4zxzxv") {
+                //console.log(feat);
+                document.getElementById('features').innerHTML = feat.properties.ENGNAME;
+            }
+
+        });
+
+
+
+        // map.on('mousemove', function (e) {
+        //     var features = map.queryRenderedFeatures(e.point);
+
+        //     // Limit the number of properties we're displaying for
+        //     // legibility and performance
+        //     var displayProperties = [
+        //         'type',
+        //         'properties',
+        //         'id',
+        //         'layer',
+        //         'source',
+        //         'sourceLayer',
+        //         'state'
+        //     ];
 
         var displayFeatures = features.map(function (feat) {
             var displayFeat = {};
