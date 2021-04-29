@@ -2,6 +2,7 @@
 const {
   Model
 } = require('sequelize');
+//const { report } = require('../routes/api');
 module.exports = (sequelize, DataTypes) => {
   class Report extends Model {
     /**
@@ -13,6 +14,7 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
     }
   };
+
   Report.init({
     hr_uid: DataTypes.INTEGER,
     date: DataTypes.DATE,
@@ -36,5 +38,12 @@ module.exports = (sequelize, DataTypes) => {
     sequelize,
     modelName: 'Report',
   });
+
+  /*(async()=>{
+    await sequelize.sync();
+    const data=await Report.create({
+
+    })
+  })*/
   return Report;
 };

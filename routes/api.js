@@ -3,7 +3,9 @@ const router = express.Router();
 const axios = require("axios");
 const db = require("../models");
 const cache = db.Cache;
+const report = db.Report;
 const { Op } = require('sequelize');
+
 
 router.get('/orm', async (req, res) => {
 
@@ -62,7 +64,7 @@ router.get('/reports', async (req, res) => {
     console.log(req.query.region);
     // let url = 'https://api.covid19tracker.ca/reports/regions';
     let url = `https://api.covid19tracker.ca/reports/regions/${req.query.region}`;
-    
+
 
     data = await cache.findAll({
         order: [['lastFetch', 'DESC']],
@@ -101,7 +103,7 @@ router.get('/reports', async (req, res) => {
         console.log("Fetched data from cache");
         res.send(data[0].content);
 
-        if (req.query.region == "2407") {
+        if (req.query.region == "9999") {
             var rep = JSON.parse(data[0].content);
             // console.log("hr_uid", rep.hr_uid);
             // console.log("last_updated", rep.last_updated);
@@ -114,10 +116,24 @@ router.get('/reports', async (req, res) => {
                     // content: JSON.stringify(d.data),
                     // lastFetch: Date.now()
                     hr_uid: rep.hr_uid,
-                    date: rep.date,
+                    date: daily.date, change_case: daily.change_case, change_fatalities: daily.change_fatalities,
+                    change_tests: daily.change_tests,
+                    change_hospitalizations: daily.change_hospitalizations,
+                    change_criticals: daily.change_criticals,
+                    change_recoveries: daily.change_recoveries,
+                    change_vaccinations: daily.change_vaccinations,
+                    change_vaccines_distributed: daily.change_vaccines_distributed,
+                    total_cases: daily.total_cases,
+                    total_fatalities: daily.total_fatalities,
+                    total_tests: daily.total_tests,
+                    total_hospitalizations: daily.total_hospitalizations,
+                    total_criticals: daily.total_criticals,
+                    total_recoveries: daily.total_recoveries,
+                    total_vaccinations: daily.total_vaccinations,
+                    total_vaccines_distributed: daily.total_vaccines_distributed
 
                 };
-                
+
                 report.create(data);
             }
         }
