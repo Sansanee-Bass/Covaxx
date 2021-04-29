@@ -63,7 +63,7 @@ router.get('/regions', async (req, res) => {
 router.get('/reports', async (req, res) => {
     console.log(req.query.region);
     // let url = 'https://api.covid19tracker.ca/reports/regions';
-    let url = `https://api.covid19tracker.ca/reports/regions/${req.query.region}?date=2021-04-28`;
+    let url = `https://api.covid19tracker.ca/reports/regions/${req.query.region}?date=${req.query.date}`;
 
 
     data = await cache.findAll({
@@ -148,10 +148,7 @@ router.get('/reports', async (req, res) => {
                 // console.log("date", daily.date);
                 // console.log("new cases", daily.change_cases);
 
-                const data = {
-                    // url: url,
-                    // content: JSON.stringify(d.data),
-                    // lastFetch: Date.now()
+                const reportData = {
                     hr_uid: rep.hr_uid,
                     date: daily.date, change_case: daily.change_case, change_fatalities: daily.change_fatalities,
                     change_tests: daily.change_tests,
@@ -171,11 +168,61 @@ router.get('/reports', async (req, res) => {
 
                 };
 
-                report.create(data);
+                report.create(reportData);
             }
         }
     }
 });
+
+router.get('/recent', async (req, res) => {
+    let region = req.query.region;
+
+    data = await report.findAll({
+        order: [['date', 'ASC']],
+        where: {
+            [Op.and]: [
+                { hr_uid: region },
+                {
+                    date: {
+                        [Op.gte]: new Date(new Date() - 15 * 24 * 60 * 60 * 1000)
+                        // 14 days
+                    }
+                }
+            ]
+        }
+    });
+
+    // if (data.length == 0) {
+    //     console.log("Fetched recent");
+    //     const d = await axios.get(url, {
+    //         responseType: 'text'
+    //     });
+
+    res.send(
+            data
+        );
+
+    // if (data.length == 0) {
+    //     console.log("Fetched data and updated cache");
+    //     const d = await axios.get(url, {
+    //         responseType: 'text'
+    //     });
+
+    //     const data = {
+    //         url: url,
+    //         content: JSON.stringify(d.data),
+    //         lastFetch: Date.now()
+    //     };
+    //     res.send(
+    //         d.data
+    //     );
+    //     cache.create(data);
+    // } else {
+    //     // console.log("Fetched data from cache");
+    //     res.send(data[0].content);
+    // }
+});
+
 
 
 module.exports = router;
