@@ -81,6 +81,7 @@ p {
   font-family: Arial, sans-serif;
   overflow: auto;
   border-radius: 3px;
+  padding: .25em;
 }
 
 #features {

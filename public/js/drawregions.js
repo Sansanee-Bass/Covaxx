@@ -20,16 +20,16 @@ drawregions = function (map, region_map) {
         mapdata
     );
 
-    map.addLayer({
-        'id': 'region-borders',
-        'type': 'line',
-        'source': 'regions',
-        'layout': {},
-        'paint': {
-            'line-color': '#000',
-            'line-width': 1
-        }
-    });
+    // map.addLayer({
+    //     'id': 'region-borders',
+    //     'type': 'line',
+    //     'source': 'regions',
+    //     'layout': {},
+    //     'paint': {
+    //         'line-color': '#FFF',
+    //         'line-width': 1
+    //     }
+    // });
 
     // When the user moves their mouse over the region-fill layer, we'll update the
     // feature state for the feature under the mouse.
@@ -53,15 +53,19 @@ drawregions = function (map, region_map) {
 
         //     // Limit the number of properties we're displaying for
         //     // legibility and performance
-        //     var displayProperties = [
-        //         'type',
-        //         'properties',
-        //         'id',
-        //         'layer',
-        //         'source',
-        //         'sourceLayer',
-        //         'state'
-        //     ];
+        // var displayProperties = [
+        //     'type',
+        //     'properties',
+        //     'id',
+        //     'layer',
+        //     'source',
+        //     'sourceLayer',
+        //     'state'
+        // ];
+            var displayProperties = [
+                'properties',
+                'state'
+            ];
 
         var displayFeatures = features.map(function (feat) {
             var displayFeat = {};
@@ -71,11 +75,9 @@ drawregions = function (map, region_map) {
             return displayFeat;
         });
 
-        document.getElementById('features').innerHTML = JSON.stringify(
-            displayFeatures,
-            null,
-            2
-        );
+        if (displayFeatures[0] != undefined && displayFeatures[0].properties.ENGNAME != undefined) {
+            document.getElementById('features').innerHTML = displayFeatures[0].properties.ENGNAME;
+        }
     });
 
 

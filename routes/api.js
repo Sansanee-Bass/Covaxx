@@ -52,12 +52,12 @@ router.get('/regions', async (req, res) => {
         );
         cache.create(data);
     } else {
-        console.log("Fetched data from cache");
+        // console.log("Fetched data from cache");
         res.send(data[0].content);
     }
 });
 
-//reports/regions/:hr_uid
+// reports/regions/:hr_uid
 router.get('/reports', async (req, res) => {
     console.log(req.query.region);
     // let url = 'https://api.covid19tracker.ca/reports/regions';
@@ -80,16 +80,19 @@ router.get('/reports', async (req, res) => {
     // console.log(data);
 
     if (data.length == 0) {
-        console.log("Fetched data and updated cache");
+        // console.log("Fetched data and updated cache");
         const d = await axios.get(url, {
             responseType: 'text'
         });
+
+        //console.log("data", d.data);
 
         const data = {
             url: url,
             content: JSON.stringify(d.data),
             lastFetch: Date.now()
         };
+
         res.send(
             d.data
         );
@@ -97,6 +100,27 @@ router.get('/reports', async (req, res) => {
     } else {
         console.log("Fetched data from cache");
         res.send(data[0].content);
+
+        if (req.query.region == "2407") {
+            var rep = JSON.parse(data[0].content);
+            // console.log("hr_uid", rep.hr_uid);
+            // console.log("last_updated", rep.last_updated);
+            for (let daily of rep.data) {
+                // console.log("date", daily.date);
+                // console.log("new cases", daily.change_cases);
+
+                const data = {
+                    // url: url,
+                    // content: JSON.stringify(d.data),
+                    // lastFetch: Date.now()
+                    hr_uid: rep.hr_uid,
+                    date: rep.date,
+
+                };
+                
+                report.create(data);
+            }
+        }
     }
 });
 
