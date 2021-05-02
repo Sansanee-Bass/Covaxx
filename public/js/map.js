@@ -33,7 +33,27 @@ window.onload = async () => {
     console.log(map);
     getRegions();
     let region_map = await readJson();
-    map.on('load', () => { drawregions(map, region_map) });
+    map.on('load', () => {
+        drawregions(map, region_map)
+
+        map.addLayer({
+            'id': 'state-fills',
+            'type': 'fill',
+            'source': 'regions',
+            'layout': {},
+            'paint': {
+                'fill-color': '#CC7890',
+                'fill-opacity': [
+                    'case',
+                    ['boolean', ['feature-state', 'hover'], false],
+                    0.5,
+                    0.0
+                ]
+            }
+        });
+    });
+
+
     // console.log(region_map);
     // console.log(region_map.features[0].geometry.coordinates);
 

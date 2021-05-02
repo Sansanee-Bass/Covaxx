@@ -33,6 +33,30 @@ drawregions = function (map, region_map) {
 
     // When the user moves their mouse over the region-fill layer, we'll update the
     // feature state for the feature under the mouse.
+    map.on('mousemove', 'state-fills', function (e) {
+        if (e.features.length > 0) {
+            if (hoveredStateId !== null) {
+                map.setFeatureState(
+                    { source: 'regions', id: hoveredStateId },
+                    { hover: false }
+                );
+            }
+            hoveredStateId = e.features[0].id;
+            map.setFeatureState(
+                { source: 'regions', id: hoveredStateId },
+                { hover: true }
+            );
+        }
+    });
+    map.on('mouseleave', 'state-fills', function () {
+        if (hoveredStateId !== null) {
+            map.setFeatureState(
+                { source: 'regions', id: hoveredStateId },
+                { hover: false }
+            );
+        }
+        hoveredStateId = null;
+    });
 
     map.on('mousemove', function (e) {
 
@@ -45,6 +69,8 @@ drawregions = function (map, region_map) {
             }
 
         });
+
+
 
 
 
@@ -86,17 +112,32 @@ drawregions = function (map, region_map) {
                 document.getElementById('pd').innerHTML = "";
                 document.getElementById('pd').innerHTML = '<h2>' + thisFeature.properties.ENGNAME; "</h2>"
                 document.getElementById('pd').innerHTML += '<h2>Total cases: </h2>';
+
+                var sum = 0;
                 for (let x = 0; x < value.length; x++) {
-                    document.getElementById('pd').innerHTML += " " + value[x].total_cases;
+                    sum += value[x].total_cases;
+                    // document.getElementById('pd').innerHTML += " " + value[x].total_cases;
                 }
+                document.getElementById('pd').innerHTML += " " + sum / value.length;
+
                 document.getElementById('pd').innerHTML += "<br />" + '<h2>Total hospitalizations:  </h2>';
+
+                var sum = 0;
                 for (let x = 0; x < value.length; x++) {
-                    document.getElementById('pd').innerHTML += " " + value[x].total_hospitalizations;
+                    sum += value[x].total_hospitalizations;
+                    // document.getElementById('pd').innerHTML += " " + value[x].total_hospitalizations;
                 }
+                document.getElementById('pd').innerHTML += " " + sum / value.length;
+
+
                 document.getElementById('pd').innerHTML += "<br />" + "<h2>Total recoveries: </h2>";
+
+                var sum = 0;
                 for (let x = 0; x < value.length; x++) {
-                    document.getElementById('pd').innerHTML += " " + value[x].total_recoveries;
+                    sum += value[x].total_recoveries;
+                    // document.getElementById('pd').innerHTML += " " + value[x].total_recoveries;
                 }
+                document.getElementById('pd').innerHTML += " " + sum / value.length;
             });
 
             // let req = await fetch(`/api/recent?region=${thisFeature.properties.HR_UID}`);
@@ -114,22 +155,6 @@ drawregions = function (map, region_map) {
 
         }
     });
-
-
-    // if (e.features.length > 0) {
-    //     if (hoveredStateId !== null) {
-    //         map.setFeatureState(
-    //             { source: 'mapdata.data', id: hoveredStateId },
-    //             { hover: false }
-    //         );
-    //     }
-    //     hoveredStateId = e.features[0].id;
-    //     map.setFeatureState(
-    //         { source: 'mapdata.data', id: hoveredStateId },
-    //         { hover: true }
-    //     );
-    // }
-
 
     // When the mouse leaves the region-fill layer, update the feature state of the
     // previously hovered feature.
