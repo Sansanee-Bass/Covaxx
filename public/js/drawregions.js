@@ -81,9 +81,23 @@ drawregions = function (map, region_map) {
             // document.getElementById('features').innerHTML = thisFeature.properties.ENGNAME;
             // document.getElementById('features').innerHTML += "<br />" + thisFeature.properties.HR_UID;
             latest = getRecent(thisFeature.properties.HR_UID);
-            console.log("LATEST: ", latest);
-            document.getElementById('features').innerHTML = thisFeature.properties.ENGNAME + "<br />"
-                + "Vaccines today: " + latest.change_vaccinations;
+            latest.then(value => {
+                console.log("LATEST: ", value);
+                document.getElementById('features').innerHTML = thisFeature.properties.ENGNAME;
+                document.getElementById('features').innerHTML += "<br />" + "Total cases: ";
+                for (let x = 0; x < value.length; x++) {
+                    document.getElementById('features').innerHTML += " " + value[x].total_cases;
+                }
+                document.getElementById('features').innerHTML += "<br />" + "Total hospitalizations: ";
+                for (let x = 0; x < value.length; x++) {
+                    document.getElementById('features').innerHTML += " " + value[x].total_hospitalizations;
+                }
+                document.getElementById('features').innerHTML += "<br />" + "Total recoveries: ";
+                for (let x = 0; x < value.length; x++) {
+                    document.getElementById('features').innerHTML += " " + value[x].total_recoveries;
+                }
+            });
+            
             // let req = await fetch(`/api/recent?region=${thisFeature.properties.HR_UID}`);
         //     let data = await req.text();
         //     var regReports = JSON.parse(data).data;
@@ -137,12 +151,12 @@ let getRecent = async (region) => {
     var rept = JSON.parse(data);
 
     // console.log("DATA ", data);
-    if(rept !== undefined) {
-        console.log("REPT ", rept[0].hr_uid, "VAX ", rept[0].change_vaccinations);
-        return rept[0];
-    } else {
-        console.log("NO RECENT DATA");
-    }
+    // if(rept !== undefined) {
+    //     console.log("REPT ", rept[0].hr_uid, "VAX ", rept[0].change_vaccinations);
+         return rept;
+    // } else {
+    //     console.log("NO RECENT DATA");
+    // }
 
     // console.log("number of regions " + regions.length);
     // fetch(`/api/reports?region=${region}&date=2021-04-28`);
