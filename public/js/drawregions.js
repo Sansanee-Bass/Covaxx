@@ -104,13 +104,20 @@ drawregions = function (map, region_map) {
         let thisFeature = displayFeatures[0];
 
         if (thisFeature != undefined && thisFeature.properties.ENGNAME != undefined) {
+
+            if (thisFeature.properties.HR_UID.substring(0, 2) == "59" || thisFeature.properties.HR_UID.substring(0, 2) == "47") {
+                document.getElementById('pd').innerHTML = '<h2>' + thisFeature.properties.ENGNAME + "</h2>";
+                document.getElementById('pd').innerHTML += "<br />"
+                    + "Regional reports not available for this province.";
+            } else {
+
             // document.getElementById('features').innerHTML = thisFeature.properties.ENGNAME;
             // document.getElementById('features').innerHTML += "<br />" + thisFeature.properties.HR_UID;
             latest = getRecent(thisFeature.properties.HR_UID);
             latest.then(value => {
                 console.log("LATEST: ", value);
                 document.getElementById('pd').innerHTML = "";
-                document.getElementById('pd').innerHTML = '<h2>' + thisFeature.properties.ENGNAME; "</h2>"
+                document.getElementById('pd').innerHTML = '<h2>' + thisFeature.properties.ENGNAME + "</h2>";
                 document.getElementById('pd').innerHTML += '<h2>Total cases: </h2>';
 
                 var sum = 0;
@@ -152,7 +159,7 @@ drawregions = function (map, region_map) {
             //         // document.getElementById('regions').innerHTML += `<div id="${element.hr_uid}">${element.hr_uid} ${element.province} ${element.engname}</div>`;
             //     });
         }
-
+    }
     });
 
     // When the mouse leaves the region-fill layer, update the feature state of the
