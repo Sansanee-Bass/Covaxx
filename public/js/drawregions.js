@@ -76,29 +76,35 @@ drawregions = function (map, region_map) {
         });
 
         let thisFeature = displayFeatures[0];
-
-        if (thisFeature != undefined && thisFeature.properties.ENGNAME != undefined) {
-            // document.getElementById('features').innerHTML = thisFeature.properties.ENGNAME;
-            // document.getElementById('features').innerHTML += "<br />" + thisFeature.properties.HR_UID;
-            latest = getRecent(thisFeature.properties.HR_UID);
-            latest.then(value => {
-                console.log("LATEST: ", value);
-                document.getElementById('pd').innerHTML = "";
-                document.getElementById('pd').innerHTML = '<h2>' + thisFeature.properties.ENGNAME; "</h2>"
-                document.getElementById('pd').innerHTML += '<h2>Total cases: </h2>';
-                for (let x = 0; x < value.length; x++) {
-                    document.getElementById('pd').innerHTML += " " + value[x].total_cases;
-                }
-                document.getElementById('pd').innerHTML += "<br />" + '<h2>Total hospitalizations:  </h2>';
-                for (let x = 0; x < value.length; x++) {
-                    document.getElementById('pd').innerHTML += " " + value[x].total_hospitalizations;
-                }
-                document.getElementById('pd').innerHTML += "<br />" + "<h2>Total recoveries: </h2>";
-                for (let x = 0; x < value.length; x++) {
-                    document.getElementById('pd').innerHTML += " " + value[x].total_recoveries;
-                }
-            });
-
+        // console.log("this FEATURE", thisFeature);
+        if (thisFeature.properties.HR_UID !== undefined) {
+            if (thisFeature.properties.HR_UID.substring(0, 2) == "59" || thisFeature.properties.HR_UID.substring(0, 2) == "47") {
+                document.getElementById('pd').innerHTML = thisFeature.properties.ENGNAME;
+                document.getElementById('pd').innerHTML += "<br />"
+                    + "Regional reports not available for this province.";
+            } else {
+                // document.getElementById('features').innerHTML = thisFeature.properties.ENGNAME;
+                // document.getElementById('features').innerHTML += "<br />" + thisFeature.properties.HR_UID;
+                latest = getRecent(thisFeature.properties.HR_UID);
+                latest.then(value => {
+                    console.log("LATEST: ", value);
+                    document.getElementById('pd').innerHTML = "";
+                    document.getElementById('pd').innerHTML = '<h2>' + thisFeature.properties.HR_UID + " " + thisFeature.properties.ENGNAME; "</h2>"
+                    document.getElementById('pd').innerHTML += '<h2>Total cases: </h2>';
+                    for (let x = 0; x < value.length; x++) {
+                        document.getElementById('features').innerHTML += " " + value[x].total_cases;
+                    }
+                    document.getElementById('pd').innerHTML += "<br />" + '<h2>Total hospitalizations:  </h2>';
+                    for (let x = 0; x < value.length; x++) {
+                        document.getElementById('features').innerHTML += " " + value[x].total_hospitalizations;
+                    }
+                    document.getElementById('pd').innerHTML += "<br />" + "<h2>Total recoveries: </h2>";
+                    for (let x = 0; x < value.length; x++) {
+                        document.getElementById('pd').innerHTML += " " + value[x].total_recoveries;
+                    }
+                });
+            }
+            
             // let req = await fetch(`/api/recent?region=${thisFeature.properties.HR_UID}`);
             //     let data = await req.text();
             //     var regReports = JSON.parse(data).data;
@@ -110,9 +116,8 @@ drawregions = function (map, region_map) {
             //         // fetch(`/api/reports?region=${element.hr_uid}&date=2021-04-28`);
             //         // document.getElementById('regions').innerHTML += `<div id="${element.hr_uid}">${element.hr_uid} ${element.province} ${element.engname}</div>`;
             //     });
-
-
         }
+
     });
 
 
