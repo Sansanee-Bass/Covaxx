@@ -62,10 +62,10 @@ drawregions = function (map, region_map) {
         //     'sourceLayer',
         //     'state'
         // ];
-            var displayProperties = [
-                'properties',
-                'state'
-            ];
+        var displayProperties = [
+            'properties',
+            'state'
+        ];
 
         var displayFeatures = features.map(function (feat) {
             var displayFeat = {};
@@ -83,32 +83,33 @@ drawregions = function (map, region_map) {
             latest = getRecent(thisFeature.properties.HR_UID);
             latest.then(value => {
                 console.log("LATEST: ", value);
-                document.getElementById('features').innerHTML = thisFeature.properties.ENGNAME;
-                document.getElementById('features').innerHTML += "<br />" + "Total cases: ";
+                document.getElementById('pd').innerHTML = "";
+                document.getElementById('pd').innerHTML = '<h2>' + thisFeature.properties.ENGNAME; "</h2>"
+                document.getElementById('pd').innerHTML += '<h2>Total cases: </h2>';
                 for (let x = 0; x < value.length; x++) {
-                    document.getElementById('features').innerHTML += " " + value[x].total_cases;
+                    document.getElementById('pd').innerHTML += " " + value[x].total_cases;
                 }
-                document.getElementById('features').innerHTML += "<br />" + "Total hospitalizations: ";
+                document.getElementById('pd').innerHTML += "<br />" + '<h2>Total hospitalizations:  </h2>';
                 for (let x = 0; x < value.length; x++) {
-                    document.getElementById('features').innerHTML += " " + value[x].total_hospitalizations;
+                    document.getElementById('pd').innerHTML += " " + value[x].total_hospitalizations;
                 }
-                document.getElementById('features').innerHTML += "<br />" + "Total recoveries: ";
+                document.getElementById('pd').innerHTML += "<br />" + "<h2>Total recoveries: </h2>";
                 for (let x = 0; x < value.length; x++) {
-                    document.getElementById('features').innerHTML += " " + value[x].total_recoveries;
+                    document.getElementById('pd').innerHTML += " " + value[x].total_recoveries;
                 }
             });
-            
+
             // let req = await fetch(`/api/recent?region=${thisFeature.properties.HR_UID}`);
-        //     let data = await req.text();
-        //     var regReports = JSON.parse(data).data;
+            //     let data = await req.text();
+            //     var regReports = JSON.parse(data).data;
 
-        //     console.log("reports", regReports);
-        //     regions.forEach(element => {
-        //         // console.log("Requesting region" + element.hr_uid);
+            //     console.log("reports", regReports);
+            //     regions.forEach(element => {
+            //         // console.log("Requesting region" + element.hr_uid);
 
-        //         // fetch(`/api/reports?region=${element.hr_uid}&date=2021-04-28`);
-        //         // document.getElementById('regions').innerHTML += `<div id="${element.hr_uid}">${element.hr_uid} ${element.province} ${element.engname}</div>`;
-        //     });
+            //         // fetch(`/api/reports?region=${element.hr_uid}&date=2021-04-28`);
+            //         // document.getElementById('regions').innerHTML += `<div id="${element.hr_uid}">${element.hr_uid} ${element.province} ${element.engname}</div>`;
+            //     });
 
 
         }
@@ -153,7 +154,7 @@ let getRecent = async (region) => {
     // console.log("DATA ", data);
     // if(rept !== undefined) {
     //     console.log("REPT ", rept[0].hr_uid, "VAX ", rept[0].change_vaccinations);
-         return rept;
+    return rept;
     // } else {
     //     console.log("NO RECENT DATA");
     // }
