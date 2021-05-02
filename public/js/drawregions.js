@@ -151,9 +151,8 @@ drawregions = function (map, region_map) {
             //         // fetch(`/api/reports?region=${element.hr_uid}&date=2021-04-28`);
             //         // document.getElementById('regions').innerHTML += `<div id="${element.hr_uid}">${element.hr_uid} ${element.province} ${element.engname}</div>`;
             //     });
-
-
         }
+
     });
 
     // When the mouse leaves the region-fill layer, update the feature state of the
