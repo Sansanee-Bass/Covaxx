@@ -20,16 +20,16 @@ drawregions = function (map, region_map) {
         mapdata
     );
 
-    // map.addLayer({
-    //     'id': 'region-borders',
-    //     'type': 'line',
-    //     'source': 'regions',
-    //     'layout': {},
-    //     'paint': {
-    //         'line-color': '#FFF',
-    //         'line-width': 1
-    //     }
-    // });
+    map.addLayer({
+        'id': 'region-borders',
+        'type': 'line',
+        'source': 'regions',
+        'layout': {},
+        'paint': {
+            'line-color': '#FFF',
+            'line-width': 1
+        }
+    });
 
     // When the user moves their mouse over the region-fill layer, we'll update the
     // feature state for the feature under the mouse.
@@ -75,8 +75,28 @@ drawregions = function (map, region_map) {
             return displayFeat;
         });
 
-        if (displayFeatures[0] != undefined && displayFeatures[0].properties.ENGNAME != undefined) {
-            document.getElementById('features').innerHTML = displayFeatures[0].properties.ENGNAME;
+        let thisFeature = displayFeatures[0];
+
+        if (thisFeature != undefined && thisFeature.properties.ENGNAME != undefined) {
+            // document.getElementById('features').innerHTML = thisFeature.properties.ENGNAME;
+            // document.getElementById('features').innerHTML += "<br />" + thisFeature.properties.HR_UID;
+            latest = getRecent(thisFeature.properties.HR_UID);
+            console.log("LATEST: ", latest);
+            document.getElementById('features').innerHTML = thisFeature.properties.ENGNAME + "<br />"
+                + "Vaccines today: " + latest.change_vaccinations;
+            // let req = await fetch(`/api/recent?region=${thisFeature.properties.HR_UID}`);
+        //     let data = await req.text();
+        //     var regReports = JSON.parse(data).data;
+
+        //     console.log("reports", regReports);
+        //     regions.forEach(element => {
+        //         // console.log("Requesting region" + element.hr_uid);
+
+        //         // fetch(`/api/reports?region=${element.hr_uid}&date=2021-04-28`);
+        //         // document.getElementById('regions').innerHTML += `<div id="${element.hr_uid}">${element.hr_uid} ${element.province} ${element.engname}</div>`;
+        //     });
+
+
         }
     });
 
@@ -107,5 +127,26 @@ drawregions = function (map, region_map) {
         }
         hoveredStateId = null;
     });
+
+}
+
+let getRecent = async (region) => {
+    // let req = await fetch("/api/regions");
+    let req = await fetch(`/api/recent?region=${region}`);
+    let data = await req.text();
+    var rept = JSON.parse(data);
+
+    // console.log("DATA ", data);
+    if(rept !== undefined) {
+        console.log("REPT ", rept[0].hr_uid, "VAX ", rept[0].change_vaccinations);
+        return rept[0];
+    } else {
+        console.log("NO RECENT DATA");
+    }
+
+    // console.log("number of regions " + regions.length);
+    // fetch(`/api/reports?region=${region}&date=2021-04-28`);
+    // regions.forEach(element => {
+    // });
 
 }

@@ -8,10 +8,13 @@ let getRegions = async () => {
     //let parsed = new window.DOMParser().parseFromString(data, 'text/xml');
     // let regions = parsed;//.querySelectorAll();
 
-    //console.log(regions.length);
+    // console.log("number of regions " + regions.length);
+    fetch(`/api/reports?region=2407&date=2021-04-28`);
     regions.forEach(element => {
-        fetch(`/api/reports?region=${element.hr_uid}&date=2021-04-28`);
-        document.getElementById('regions').innerHTML += `<div id="${element.hr_uid}">${element.hr_uid} ${element.province} ${element.engname}</div>`;
+        // console.log("Requesting region" + element.hr_uid);
+
+        // fetch(`/api/reports?region=${element.hr_uid}&date=2021-04-28`);
+        // document.getElementById('regions').innerHTML += `<div id="${element.hr_uid}">${element.hr_uid} ${element.province} ${element.engname}</div>`;
     });
 
 }
