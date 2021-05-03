@@ -17,20 +17,20 @@ drawregions = function (map, region_map) {
         mapdata
     );
 
-    map.addLayer({
-        'id': 'region-borders',
-        'type': 'line',
-        'source': 'regions',
-        'layout': {},
-        'paint': {
-            'line-color': '#FFF',
-            'line-width': 1
-        }
-    });
+    // map.addLayer({
+    //     'id': 'region-borders',
+    //     'type': 'line',
+    //     'source': 'regions',
+    //     'layout': {},
+    //     'paint': {
+    //         'line-color': '#FFF',
+    //         'line-width': 1
+    //     }
+    // });
 
     // When the user moves their mouse over the region-fill layer, we'll update the
     // feature state for the feature under the mouse.
-    map.on('mousemove', 'state-fills', function (e) {
+    map.on('mousemove', 'region-fills', function (e) {
         if (e.features.length > 0) {
             if (hoveredStateId !== null) {
                 map.setFeatureState(
@@ -45,7 +45,8 @@ drawregions = function (map, region_map) {
             );
         }
     });
-    map.on('mouseleave', 'state-fills', function () {
+
+    map.on('mouseleave', 'region-fills', function () {
         if (hoveredStateId !== null) {
             map.setFeatureState(
                 { source: 'regions', id: hoveredStateId },
@@ -63,13 +64,15 @@ drawregions = function (map, region_map) {
             if (feat.layer.id == "health-regions-4zxzxv") {
                 document.getElementById('features').innerHTML = feat.properties.ENGNAME;
             }
-
         });
 
         var displayProperties = [
             'properties',
             'state'
         ];
+
+        // let el = document.getElementById('features')[0];
+        // el.style.backgroundColor = "red";
 
         var displayFeatures = features.map(function (feat) {
             var displayFeat = {};
@@ -85,8 +88,7 @@ drawregions = function (map, region_map) {
 
             if (thisFeature.properties.HR_UID.substring(0, 2) == "59" || thisFeature.properties.HR_UID.substring(0, 2) == "47") {
                 document.getElementById('pd').innerHTML = '<h2>' + thisFeature.properties.ENGNAME + "</h2>";
-                document.getElementById('pd').innerHTML += "<br />"
-                    + "Regional reports not available for this province.";
+                document.getElementById('pd').innerHTML += "<h3>Regional reports not available for this province.</h3>";
             } else {
 
                 latest = getRecent(thisFeature.properties.HR_UID);
@@ -94,30 +96,30 @@ drawregions = function (map, region_map) {
                     console.log("LATEST: ", value);
                     document.getElementById('pd').innerHTML = "";
                     document.getElementById('pd').innerHTML = '<h2>' + thisFeature.properties.ENGNAME + "</h2>";
-                    document.getElementById('pd').innerHTML += '<h2>Total cases: </h2>';
+                    document.getElementById('pd').innerHTML += '<h3>Total cases: </h3>';
 
                     var sum = 0;
                     for (let x = 0; x < value.length; x++) {
                         sum += value[x].total_cases;
                     }
-                    document.getElementById('pd').innerHTML += " " + sum / value.length;
+                    document.getElementById('pd').innerHTML += "<p>" + sum / value.length + "</p>";
 
-                    document.getElementById('pd').innerHTML += "<br />" + '<h2>Total hospitalizations:  </h2>';
+                    document.getElementById('pd').innerHTML += '<h3>Total hospitalizations:  </h3>';
 
                     var sum = 0;
                     for (let x = 0; x < value.length; x++) {
                         sum += value[x].total_hospitalizations;
                     }
-                    document.getElementById('pd').innerHTML += " " + sum / value.length;
+                    document.getElementById('pd').innerHTML += "<p>" + sum / value.length + "</p>";
 
 
-                    document.getElementById('pd').innerHTML += "<br />" + "<h2>Total recoveries: </h2>";
+                    document.getElementById('pd').innerHTML += "<h3>Total recoveries: </h3>";
 
                     var sum = 0;
                     for (let x = 0; x < value.length; x++) {
                         sum += value[x].total_recoveries;
                     }
-                    document.getElementById('pd').innerHTML += " " + sum / value.length;
+                    document.getElementById('pd').innerHTML += "<p>" + sum / value.length + "</p>";
                 });
             }
         }

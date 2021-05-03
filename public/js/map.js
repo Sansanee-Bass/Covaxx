@@ -28,12 +28,12 @@ window.onload = async () => {
 
     console.log(map);
     getRegions();
-    let region_map = await readJson();
+    let region_map = await readGeojson();
     map.on('load', () => {
         drawregions(map, region_map)
 
         map.addLayer({
-            'id': 'state-fills',
+            'id': 'region-fills',
             'type': 'fill',
             'source': 'regions',
             'layout': {},
@@ -51,7 +51,7 @@ window.onload = async () => {
 
 };
 
-let readJson = async function () {
+let readGeojson = async function () {
 
     let response = await fetch('/geojson/health_regions.geojson');
 
