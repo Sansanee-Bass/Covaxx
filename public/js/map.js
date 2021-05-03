@@ -1,8 +1,14 @@
+
+
 let getRegions = async () => {
     let req = await fetch("/api/regions");
     let data = await req.text();
     var regions = JSON.parse(data).data;
 
+    //let parsed = new window.DOMParser().parseFromString(data, 'text/xml');
+    // let regions = parsed;//.querySelectorAll();
+
+    // console.log("number of regions " + regions.length);
     fetch(`/api/reports?region=2407&date=2021-04-28`);
     regions.forEach(element => {
         // console.log("Requesting region" + element.hr_uid);
@@ -23,6 +29,8 @@ window.onload = async () => {
         minZoom: 3,
         maxZoom: 22
     });
+
+    console.log(map);
     getRegions();
     let region_map = await readJson();
     map.on('load', () => {
@@ -34,7 +42,7 @@ window.onload = async () => {
             'source': 'regions',
             'layout': {},
             'paint': {
-                'fill-color': '#E67E22 ',
+                'fill-color': '#CC7890',
                 'fill-opacity': [
                     'case',
                     ['boolean', ['feature-state', 'hover'], false],
@@ -44,6 +52,44 @@ window.onload = async () => {
             }
         });
     });
+
+
+    // console.log(region_map);
+    // console.log(region_map.features[0].geometry.coordinates);
+
+
+
+    // let location = false;
+    // let tracker;
+    // if ('geolocation' in navigator) {
+    //     navigator.geolocation.getCurrentPosition((p) => {
+    //         console.log(p.coords);
+    //         location = true;
+    //         map.setCenter({ lon: p.coords.longitude, lat: p.coords.latitude });
+    //     });
+    // }
+
+    // if (!location) {
+    //     // geolocation not available
+    //     if ('geolocation' in navigator) {
+    //         let allowGeo = await navigator.permissions.query({ name: 'geolocation' });
+    //         if (allowGeo.state == "prompt") {
+    //             allowGeo.onchange = (e) => {
+    //                 if (e.target.state == "granted") {
+
+    //                     //console.log(e);
+    //                     navigator.geolocation.getCurrentPosition((p) => {
+    //                         console.log(p.coords);
+    //                         location = true;
+    //                         map.setCenter({ lon: p.coords.longitude, lat: p.coords.latitude });
+    //                     });
+
+    //                 }
+    //             };
+    //         }
+    //     }
+    //     // getServerGeo();
+    // };
 };
 
 let readJson = async function () {

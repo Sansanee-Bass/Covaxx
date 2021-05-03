@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Covaxx</title>
+    <title>Document</title>
     <link href='https://api.mapbox.com/mapbox-gl-js/v2.2.0/mapbox-gl.css' rel='stylesheet' />
     <link href="css/style.css" rel="stylesheet" />
     <script src='https://api.mapbox.com/mapbox-gl-js/v2.2.0/mapbox-gl.js'></script>
@@ -14,20 +14,39 @@
 
 <body>
     <header><strong>Covaxx</strong></header>
+    <nav id="nav-bar">
+        <ul id="nav-id">
+            <li class="nav-links">
+                <a href="">Home</a>
+            </li>
+            <li class="nav-links">
+                <a href="">Credits</a>
+            </li>
+        </ul>
+    </nav>
     <main id="app">
         <div id='map'></div>
+
         <div class='map-overlay' id='features'>
+            <h2>Covaxx Canada </h2>
             <div id='pd'>
                 Hover over a Region!
             </div>
         </div>
 
     </main>
+
+
     <script src="js/drawregions.js"></script>
     <script src="js/map.js"></script>
+    <script src="js/getreports.js"></script>
 
-    <footer>Covaxx By: Christopher Wyman, Neil Wick & Sansanee Aukarapasuchart</footer>
+
 </body>
-
+<footer>Covaxx
+    <p>
+    <h6>Created by: Christopher Wyman, Neil Wick & Sansanee Aukarapasuchart.</h6>
+    </p>
+</footer>
 
 </html>
