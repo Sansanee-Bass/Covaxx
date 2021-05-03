@@ -71,8 +71,9 @@ drawregions = function (map, region_map) {
             'state'
         ];
 
-        // let el = document.getElementById('features')[0];
-        // el.style.backgroundColor = "red";
+        let el = document.getElementById('features');
+        el.style.left = e.originalEvent.clientX + "px";
+        el.style.top = (e.originalEvent.clientY - document.getElementById('map').offsetTop )+ "px";
 
         var displayFeatures = features.map(function (feat) {
             var displayFeat = {};
@@ -85,6 +86,8 @@ drawregions = function (map, region_map) {
         let thisFeature = displayFeatures[0];
 
         if (thisFeature != undefined && thisFeature.properties.ENGNAME != undefined) {
+
+            el.style.display = "block";
 
             if (thisFeature.properties.HR_UID.substring(0, 2) == "59" || thisFeature.properties.HR_UID.substring(0, 2) == "47") {
                 document.getElementById('pd').innerHTML = '<h2>' + thisFeature.properties.ENGNAME + "</h2>";
@@ -102,7 +105,7 @@ drawregions = function (map, region_map) {
                     for (let x = 0; x < value.length; x++) {
                         sum += value[x].total_cases;
                     }
-                    document.getElementById('pd').innerHTML += "<p>" + sum / value.length + "</p>";
+                    document.getElementById('pd').innerHTML += "<p>" + Math.round(sum / value.length) + "</p>";
 
                     document.getElementById('pd').innerHTML += '<h3>Total hospitalizations:  </h3>';
 
@@ -110,7 +113,7 @@ drawregions = function (map, region_map) {
                     for (let x = 0; x < value.length; x++) {
                         sum += value[x].total_hospitalizations;
                     }
-                    document.getElementById('pd').innerHTML += "<p>" + sum / value.length + "</p>";
+                    document.getElementById('pd').innerHTML += "<p>" + Math.round(sum / value.length) + "</p>";
 
 
                     document.getElementById('pd').innerHTML += "<h3>Total recoveries: </h3>";
@@ -119,7 +122,7 @@ drawregions = function (map, region_map) {
                     for (let x = 0; x < value.length; x++) {
                         sum += value[x].total_recoveries;
                     }
-                    document.getElementById('pd').innerHTML += "<p>" + sum / value.length + "</p>";
+                    document.getElementById('pd').innerHTML += "<p>" + Math.round(sum / value.length) + "</p>";
                 });
             }
         }
@@ -128,6 +131,8 @@ drawregions = function (map, region_map) {
     // When the mouse leaves the region-fill layer, update the feature state of the
     // previously hovered feature.
     map.on('mouseleave', 'region-fills', function () {
+        let el = document.getElementById('features');
+        el.style.display = "none";
         if (hoveredStateId !== null) {
             map.setFeatureState(
                 { source: 'mapdata.data', id: hoveredStateId },

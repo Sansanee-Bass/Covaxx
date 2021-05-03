@@ -25,8 +25,8 @@ window.onload = async () => {
         minZoom: 3,
         maxZoom: 22
     });
+    map.addControl(new mapboxgl.NavigationControl());
 
-    console.log(map);
     getRegions();
     let region_map = await readGeojson();
     map.on('load', () => {
