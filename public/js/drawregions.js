@@ -60,11 +60,11 @@ drawregions = function (map, region_map) {
 
         var features = map.queryRenderedFeatures(e.point);
 
-        features.forEach((feat) => {
-            if (feat.layer.id == "health-regions-4zxzxv") {
-                document.getElementById('features').innerHTML = feat.properties.ENGNAME;
-            }
-        });
+        // features.forEach((feat) => {
+        //     if (feat.layer.id == "health-regions-4zxzxv") {
+        //         document.getElementById('features').innerHTML = feat.properties.ENGNAME;
+        //     }
+        // });
 
         var displayProperties = [
             'properties',
@@ -99,30 +99,30 @@ drawregions = function (map, region_map) {
                     console.log("LATEST: ", value);
                     document.getElementById('pd').innerHTML = "";
                     document.getElementById('pd').innerHTML = '<h2>' + thisFeature.properties.ENGNAME + "</h2>";
-                    document.getElementById('pd').innerHTML += '<h3>Total cases: </h3>';
+                    document.getElementById('pd').innerHTML += '<h3>Average new cases per day: </h3>';
 
-                    var sum = 0;
-                    for (let x = 0; x < value.length; x++) {
-                        sum += value[x].total_cases;
-                    }
-                    document.getElementById('pd').innerHTML += "<p>" + Math.round(sum / value.length) + "</p>";
+                    // var sum = 0;
+                    // for (let x = 0; x < value.length; x++) {
+                    //     sum += value[x].total_cases;
+                    // }
+                    document.getElementById('pd').innerHTML += "<p>" + Math.round((value[value.length-1].total_cases - value[0].total_cases) / value.length) + "</p>";
 
-                    document.getElementById('pd').innerHTML += '<h3>Total hospitalizations:  </h3>';
+                    document.getElementById('pd').innerHTML += '<h3>Average new hospitalizations per day:  </h3>';
 
-                    var sum = 0;
-                    for (let x = 0; x < value.length; x++) {
-                        sum += value[x].total_hospitalizations;
-                    }
-                    document.getElementById('pd').innerHTML += "<p>" + Math.round(sum / value.length) + "</p>";
+                    // var sum = 0;
+                    // for (let x = 0; x < value.length; x++) {
+                    //     sum += value[x].total_hospitalizations;
+                    // }
+                    document.getElementById('pd').innerHTML += "<p>" + Math.round((value[value.length - 1].total_hospitalizations - value[0].total_hospitalizations) / value.length) + "</p>";
 
 
-                    document.getElementById('pd').innerHTML += "<h3>Total recoveries: </h3>";
+                    document.getElementById('pd').innerHTML += "<h3>Average recoveries per day: </h3>";
 
-                    var sum = 0;
-                    for (let x = 0; x < value.length; x++) {
-                        sum += value[x].total_recoveries;
-                    }
-                    document.getElementById('pd').innerHTML += "<p>" + Math.round(sum / value.length) + "</p>";
+                    // var sum = 0;
+                    // for (let x = 0; x < value.length; x++) {
+                    //     sum += value[x].total_recoveries;
+                    // }
+                    document.getElementById('pd').innerHTML += "<p>" + Math.round((value[value.length - 1].total_recoveries - value[0].total_recoveries) / value.length) + "</p>";
                 });
             }
         }

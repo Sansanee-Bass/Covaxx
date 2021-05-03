@@ -18,7 +18,7 @@ router.get('/regions', async (req, res) => {
                 { url: url },
                 {
                     lastFetch: {
-                        [Op.gte]: new Date(new Date() - 24 * 60 * 60 * 1000)
+                        [Op.gte]: new Date(new Date() - 30 * 24 * 60 * 60 * 1000)
                     }
                 }
             ]
@@ -77,12 +77,12 @@ router.get('/reports', async (req, res) => {
             total_vaccines_distributed: daily.total_vaccines_distributed
         }
 
-        // 2020-06-30 00:00:00
+        // SQLite format: 2020-06-30 00:00:00
         const row = await sequelize.query("SELECT `id`, `hr_uid`, `date` FROM`Reports` AS `Report` "
-            + "WHERE(`hr_uid` = 2407 AND `date` > '" + dailyData.date
+            + "WHERE(`hr_uid` = " + hr + " AND `date` > '" + dailyData.date
             + "' AND `date` < DATE('" + dailyData.date + "', '+1 day')) LIMIT 1;");
 
-
+        // Sequelize syntax could maybe be adapted 
         // const row = await report.findOne({
         //     where: {
         //         [Op.and]: [
@@ -95,7 +95,6 @@ router.get('/reports', async (req, res) => {
         console.log(row[0].length);
         if (row[0].length) {
         } else {
-            console.log("dddd", dailyData);
             report.create(dailyData);
         }
 
@@ -106,12 +105,9 @@ router.get('/reports', async (req, res) => {
 router.get('/recent', async (req, res) => {
     let region = req.query.region;
     console.log("region", region);
-    // let last = new Date(lastdate);
-    // lastdate = "2021-05-02"
-    // let first = new Date(lastdate);
-    // first.setDate(first.getDate() - 3);
-    // console.log(first.toISOString().substring(0, 10), lastdate);
-    // console.log((new Date(new Date(lastdate).getDate() - 3)).substring(0,10));
+    let first = new Date();
+    first.setDate(first.getDate() - 14);
+    let firstdate = first.toISOString().substring(0, 10);
 
     data = await report.findAll({
         order: [['date', 'ASC']],
@@ -120,7 +116,7 @@ router.get('/recent', async (req, res) => {
                 { hr_uid: region },
                 {
                     date: {
-                        [Op.gte]: new Date(new Date() - 15 * 24 * 60 * 60 * 1000)
+                        [Op.gte]: firstdate
                         // 14 days
                     }
                 }
