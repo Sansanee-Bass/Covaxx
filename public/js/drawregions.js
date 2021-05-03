@@ -2,9 +2,6 @@ drawregions = function (map, region_map) {
 
     let features = region_map.features;
 
-    // region_map.features.forEach(geo => {
-
-    // });
     var hoveredStateId = null;
 
     let mapdata = {
@@ -33,61 +30,16 @@ drawregions = function (map, region_map) {
 
     // When the user moves their mouse over the region-fill layer, we'll update the
     // feature state for the feature under the mouse.
-    map.on('mousemove', 'state-fills', function (e) {
-        if (e.features.length > 0) {
-            if (hoveredStateId !== null) {
-                map.setFeatureState(
-                    { source: 'regions', id: hoveredStateId },
-                    { hover: false }
-                );
-            }
-            hoveredStateId = e.features[0].id;
-            map.setFeatureState(
-                { source: 'regions', id: hoveredStateId },
-                { hover: true }
-            );
-        }
-    });
-    map.on('mouseleave', 'state-fills', function () {
-        if (hoveredStateId !== null) {
-            map.setFeatureState(
-                { source: 'regions', id: hoveredStateId },
-                { hover: false }
-            );
-        }
-        hoveredStateId = null;
-    });
-
     map.on('mousemove', function (e) {
 
         var features = map.queryRenderedFeatures(e.point);
 
         features.forEach((feat) => {
             if (feat.layer.id == "health-regions-4zxzxv") {
-                //console.log(feat);
                 document.getElementById('features').innerHTML = feat.properties.ENGNAME;
             }
-
         });
 
-
-
-
-
-        // map.on('mousemove', function (e) {
-        //     var features = map.queryRenderedFeatures(e.point);
-
-        //     // Limit the number of properties we're displaying for
-        //     // legibility and performance
-        // var displayProperties = [
-        //     'type',
-        //     'properties',
-        //     'id',
-        //     'layer',
-        //     'source',
-        //     'sourceLayer',
-        //     'state'
-        // ];
         var displayProperties = [
             'properties',
             'state'
@@ -104,62 +56,25 @@ drawregions = function (map, region_map) {
         let thisFeature = displayFeatures[0];
 
         if (thisFeature != undefined && thisFeature.properties.ENGNAME != undefined) {
-
-            if (thisFeature.properties.HR_UID.substring(0, 2) == "59" || thisFeature.properties.HR_UID.substring(0, 2) == "47") {
-                document.getElementById('pd').innerHTML = '<h2>' + thisFeature.properties.ENGNAME + "</h2>";
-                document.getElementById('pd').innerHTML += "<br />"
-                    + "Regional reports not available for this province.";
-            } else {
-
-            // document.getElementById('features').innerHTML = thisFeature.properties.ENGNAME;
-            // document.getElementById('features').innerHTML += "<br />" + thisFeature.properties.HR_UID;
             latest = getRecent(thisFeature.properties.HR_UID);
             latest.then(value => {
                 console.log("LATEST: ", value);
                 document.getElementById('pd').innerHTML = "";
-                document.getElementById('pd').innerHTML = '<h2>' + thisFeature.properties.ENGNAME + "</h2>";
+                document.getElementById('pd').innerHTML = '<h2>' + thisFeature.properties.ENGNAME; "</h2>"
                 document.getElementById('pd').innerHTML += '<h2>Total cases: </h2>';
-
-                var sum = 0;
                 for (let x = 0; x < value.length; x++) {
-                    sum += value[x].total_cases;
-                    // document.getElementById('pd').innerHTML += " " + value[x].total_cases;
+                    document.getElementById('pd').innerHTML += " " + value[x].total_cases;
                 }
-                document.getElementById('pd').innerHTML += " " + sum / value.length;
-
                 document.getElementById('pd').innerHTML += "<br />" + '<h2>Total hospitalizations:  </h2>';
-
-                var sum = 0;
                 for (let x = 0; x < value.length; x++) {
-                    sum += value[x].total_hospitalizations;
-                    // document.getElementById('pd').innerHTML += " " + value[x].total_hospitalizations;
+                    document.getElementById('pd').innerHTML += " " + value[x].total_hospitalizations;
                 }
-                document.getElementById('pd').innerHTML += " " + sum / value.length;
-
-
                 document.getElementById('pd').innerHTML += "<br />" + "<h2>Total recoveries: </h2>";
-
-                var sum = 0;
                 for (let x = 0; x < value.length; x++) {
-                    sum += value[x].total_recoveries;
-                    // document.getElementById('pd').innerHTML += " " + value[x].total_recoveries;
+                    document.getElementById('pd').innerHTML += " " + value[x].total_recoveries;
                 }
-                document.getElementById('pd').innerHTML += " " + sum / value.length;
             });
-
-            // let req = await fetch(`/api/recent?region=${thisFeature.properties.HR_UID}`);
-            //     let data = await req.text();
-            //     var regReports = JSON.parse(data).data;
-
-            //     console.log("reports", regReports);
-            //     regions.forEach(element => {
-            //         // console.log("Requesting region" + element.hr_uid);
-
-            //         // fetch(`/api/reports?region=${element.hr_uid}&date=2021-04-28`);
-            //         // document.getElementById('regions').innerHTML += `<div id="${element.hr_uid}">${element.hr_uid} ${element.province} ${element.engname}</div>`;
-            //     });
         }
-    }
     });
 
     // When the mouse leaves the region-fill layer, update the feature state of the
@@ -177,22 +92,8 @@ drawregions = function (map, region_map) {
 }
 
 let getRecent = async (region) => {
-    // let req = await fetch("/api/regions");
     let req = await fetch(`/api/recent?region=${region}`);
     let data = await req.text();
     var rept = JSON.parse(data);
-
-    // console.log("DATA ", data);
-    // if(rept !== undefined) {
-    //     console.log("REPT ", rept[0].hr_uid, "VAX ", rept[0].change_vaccinations);
     return rept;
-    // } else {
-    //     console.log("NO RECENT DATA");
-    // }
-
-    // console.log("number of regions " + regions.length);
-    // fetch(`/api/reports?region=${region}&date=2021-04-28`);
-    // regions.forEach(element => {
-    // });
-
 }
