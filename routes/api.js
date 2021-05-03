@@ -24,7 +24,6 @@ router.get('/regions', async (req, res) => {
             ]
         }
     });
-    // console.log(data);
 
     if (data.length == 0) {
         console.log("Fetched data and updated cache");
@@ -42,7 +41,6 @@ router.get('/regions', async (req, res) => {
         );
         cache.create(data);
     } else {
-        // console.log("Fetched data from cache");
         res.send(data[0].content);
     }
 });
@@ -56,15 +54,9 @@ router.get('/reports', async (req, res) => {
         responseType: 'json'
     });
 
-    // console.log("data==================\n\n", d.data, d.data.hr_uid);
-
     let rep = d.data;
 
-    // console.log("hr_uid", rep.hr_uid);
-    // console.log("last_updated", rep.last_updated);
     for (let daily of rep.data) {
-        // console.log("date", daily.date);
-        // console.log("new cases", daily.change_cases);
 
         const dailyData = {
             hr_uid: rep.hr_uid,
@@ -85,13 +77,12 @@ router.get('/reports', async (req, res) => {
             total_vaccines_distributed: daily.total_vaccines_distributed
         }
 
-
         // 2020-06-30 00:00:00
         const row = await sequelize.query("SELECT `id`, `hr_uid`, `date` FROM`Reports` AS `Report` "
-            + "WHERE(`hr_uid` = 2407 AND `date` > '" + dailyData.date 
+            + "WHERE(`hr_uid` = 2407 AND `date` > '" + dailyData.date
             + "' AND `date` < DATE('" + dailyData.date + "', '+1 day')) LIMIT 1;");
-        
-        // console.log(row[0]);
+
+
         // const row = await report.findOne({
         //     where: {
         //         [Op.and]: [
@@ -103,13 +94,11 @@ router.get('/reports', async (req, res) => {
 
         console.log(row[0].length);
         if (row[0].length) {
-            // dailyData.id = row.id;
-            // report.update(dailyData);
         } else {
             console.log("dddd", dailyData);
             report.create(dailyData);
         }
-        
+
     };
 
 });
@@ -139,35 +128,9 @@ router.get('/recent', async (req, res) => {
         }
     });
 
-    // if (data.length == 0) {
-    //     console.log("Fetched recent");
-    //     const d = await axios.get(url, {
-    //         responseType: 'text'
-    //     });
-
     res.send(
-            data
-        );
-
-    // if (data.length == 0) {
-    //     console.log("Fetched data and updated cache");
-    //     const d = await axios.get(url, {
-    //         responseType: 'text'
-    //     });
-
-    //     const data = {
-    //         url: url,
-    //         content: JSON.stringify(d.data),
-    //         lastFetch: Date.now()
-    //     };
-    //     res.send(
-    //         d.data
-    //     );
-    //     cache.create(data);
-    // } else {
-    //     // console.log("Fetched data from cache");
-    //     res.send(data[0].content);
-    // }
+        data
+    );
 });
 
 
